@@ -7,7 +7,7 @@ function ProtectRoute() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex h-screen cursor-default bg-gray-100">
             {/* Sidebar */}
             <Sidebar
                 isOpen={sidebarOpen}
