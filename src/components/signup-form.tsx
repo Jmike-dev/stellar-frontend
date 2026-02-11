@@ -6,7 +6,7 @@ import {
     FieldDescription,
     FieldGroup,
     FieldLabel,
-    FieldSeparator,
+    // FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { NavLink, useNavigate } from "react-router";
@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import signUpImage from "/undraw_online-profile_v9c1.svg";
 
 // Zod validation schema
 const signupSchema = z
@@ -183,18 +184,18 @@ export function SignupForm({
                             <Field>
                                 <Button type="submit">Create Account</Button>
                             </Field>
-                            <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+                            {/* <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                                 Or continue with
-                            </FieldSeparator>
+                            </FieldSeparator> */}
                             <FieldDescription className="text-center">
                                 Already have an account?{" "}
-                                <NavLink to="/signup"> Sign Up</NavLink>
+                                <NavLink to="/"> Login </NavLink>
                             </FieldDescription>
                         </FieldGroup>
                     </form>
                     <div className="bg-muted relative hidden md:block">
                         <img
-                            src="/placeholder.svg"
+                            src={signUpImage}
                             alt="Image"
                             className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
                         />
