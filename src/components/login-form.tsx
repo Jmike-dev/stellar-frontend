@@ -6,7 +6,7 @@ import {
     FieldDescription,
     FieldGroup,
     FieldLabel,
-    FieldSeparator,
+    // FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { NavLink, useNavigate } from "react-router";
@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import loginImage from "/undraw_enter-password_1kl4.svg";
 
 const loginSchema = z.object({
     email: z.string().email("Please enter a valid email"),
@@ -124,9 +125,9 @@ export function LoginForm({
                                     Login
                                 </Button>
                             </Field>
-                            <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+                            {/* <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                                 Or continue with
-                            </FieldSeparator>
+                            </FieldSeparator> */}
                             <FieldDescription className="text-center">
                                 Don&apos;t have an account?{" "}
                                 <NavLink to="/signup"> Sign Up</NavLink>
@@ -135,7 +136,7 @@ export function LoginForm({
                     </form>
                     <div className="bg-muted relative hidden md:block">
                         <img
-                            src="/placeholder.svg"
+                            src={loginImage}
                             alt="Image"
                             className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
                         />
