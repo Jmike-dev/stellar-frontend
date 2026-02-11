@@ -65,7 +65,7 @@ export function LoginForm({
                             <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                                 Or continue with
                             </FieldSeparator>
-                            <Field className="grid grid-cols-2 gap-4">
+                            {/* <Field className="grid grid-cols-2 gap-4">
                                 <Button
                                     variant="outline"
                                     type="button"
@@ -101,7 +101,7 @@ export function LoginForm({
                                         Login with facebook
                                     </span>
                                 </Button>
-                            </Field>
+                            </Field> */}
                             <FieldDescription className="text-center">
                                 Don&apos;t have an account?{" "}
                                 <NavLink to="/signup"> Sign Up</NavLink>
