@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { api } from "./axois.config";
 
 export interface CreateEmployer {
@@ -26,13 +27,13 @@ export interface JobCreation {
 
 export async function createEmployer(data: CreateEmployer) {
     const response = await api.post("/v1/auth/employer/register", data);
-    console.log("Employer created:", response.data);
+    toast.success("Employer created");
     return response.data;
 }
 
 export async function employerLogin(data: Login) {
     const response = await api.post("/v1/auth/employer/login", data);
-    console.log("Employer created:", response.data);
+    toast.success("Employer created");
 
     // Store access token in session storage
     if (response.data?.access_token) {
@@ -43,7 +44,7 @@ export async function employerLogin(data: Login) {
 }
 export async function createJob(data: JobCreation) {
     const response = await api.post("/v1/jobs/", data);
-    console.log("Employer created:", response.data);
+    toast.success("Employer created:");
     return response.data;
 }
 

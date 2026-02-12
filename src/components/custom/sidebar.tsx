@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router";
 import { Briefcase, Home, User, X, LogOut } from "lucide-react";
+import { toast } from "sonner";
 
 interface SidebarProps {
     isOpen: boolean;
@@ -17,6 +18,7 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
     function handleLogout() {
         sessionStorage.clear();
         navigate("/");
+        toast.success("Logout successful");
     }
 
     return (

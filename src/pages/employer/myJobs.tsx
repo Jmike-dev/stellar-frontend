@@ -35,7 +35,7 @@ export default function MyJobs() {
     if (loading) {
         return (
             <div className="flex h-[50vh] w-full items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <Loader2 className="text-primary h-8 w-8 animate-spin" />
             </div>
         );
     }
@@ -57,14 +57,22 @@ export default function MyJobs() {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="overflow-hidden rounded-md border overflow-x-auto">
+                    <div className="overflow-hidden overflow-x-auto rounded-md border">
                         <Table>
                             <TableHeader>
                                 <TableRow className="bg-gray-50">
-                                    <TableHead className="font-semibold">Title</TableHead>
-                                    <TableHead className="font-semibold">Location</TableHead>
-                                    <TableHead className="font-semibold">Work Type</TableHead>
-                                    <TableHead className="font-semibold text-right">Salary</TableHead>
+                                    <TableHead className="font-semibold">
+                                        Title
+                                    </TableHead>
+                                    <TableHead className="font-semibold">
+                                        Location
+                                    </TableHead>
+                                    <TableHead className="font-semibold">
+                                        Work Type
+                                    </TableHead>
+                                    <TableHead className="text-right font-semibold">
+                                        Salary
+                                    </TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -74,12 +82,16 @@ export default function MyJobs() {
                                             colSpan={4}
                                             className="h-24 text-center text-gray-500"
                                         >
-                                            No jobs found. Create your first job!
+                                            No jobs found. Create your first
+                                            job!
                                         </TableCell>
                                     </TableRow>
                                 ) : (
                                     jobs.map((job, index) => (
-                                        <TableRow key={index} className="hover:bg-gray-50/50">
+                                        <TableRow
+                                            key={index}
+                                            className="hover:bg-gray-50/50"
+                                        >
                                             <TableCell className="font-medium text-gray-900">
                                                 {job.title}
                                             </TableCell>
@@ -92,7 +104,7 @@ export default function MyJobs() {
                                                 </span>
                                             </TableCell>
                                             <TableCell className="text-right font-medium text-gray-900">
-                                                ${job.salary.toLocaleString()}
+                                                ksh{job.salary.toLocaleString()}
                                             </TableCell>
                                         </TableRow>
                                     ))
