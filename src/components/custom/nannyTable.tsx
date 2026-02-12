@@ -16,31 +16,15 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Search, X, Users, MapPin } from "lucide-react";
+import { Search, X, MapPin } from "lucide-react";
 import { CreateJobDialog } from "./CreateJobDialog";
-import { getWorkers } from "@/service/workers.service";
-
-interface Worker {
-    id: number;
-    name: string;
-    tribe: string;
-    location: string;
-}
-
-interface WorkersResponse {
-    workers: Worker[];
-    total_workers: number;
-    page: number;
-    page_size: number;
-    total_pages: number;
-}
+import { getWorkers, type WorkersResponse } from "@/service/workers.service";
 
 export function NannyTable() {
     const [workersResponse, setWorkersResponse] =
         useState<WorkersResponse | null>(null);
     const [loading, setLoading] = useState(false);
 
-    const [tribeFilter, setTribeFilter] = useState<string>("all");
     const [locationFilter, setLocationFilter] = useState<string>("all");
     const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -63,12 +47,6 @@ export function NannyTable() {
 
     const workers = workersResponse?.workers ?? [];
 
-    // ✅ Unique tribes
-    const tribes = useMemo(() => {
-        const unique = Array.from(new Set(workers.map((w) => w.tribe)));
-        return unique.sort();
-    }, [workers]);
-
     // ✅ Unique locations
     const locations = useMemo(() => {
         const unique = Array.from(new Set(workers.map((w) => w.location)));
@@ -78,28 +56,23 @@ export function NannyTable() {
     // ✅ Filter workers
     const filteredData = useMemo(() => {
         return workers.filter((person) => {
-            const matchesTribe =
-                tribeFilter === "all" || person.tribe === tribeFilter;
-
             const matchesLocation =
                 locationFilter === "all" || person.location === locationFilter;
 
-            const matchesSearch = person.name
+            const matchesSearch = person.first_name
                 .toLowerCase()
                 .includes(searchQuery.toLowerCase());
 
-            return matchesTribe && matchesLocation && matchesSearch;
+            return matchesLocation && matchesSearch;
         });
-    }, [workers, tribeFilter, locationFilter, searchQuery]);
+    }, [workers, locationFilter, searchQuery]);
 
     const clearFilters = () => {
-        setTribeFilter("all");
         setLocationFilter("all");
         setSearchQuery("");
     };
 
-    const hasActiveFilters =
-        tribeFilter !== "all" || locationFilter !== "all" || searchQuery !== "";
+    const hasActiveFilters = locationFilter !== "all" || searchQuery !== "";
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 md:p-8">
@@ -142,38 +115,6 @@ export function NannyTable() {
                                         </button>
                                     )}
                                 </div>
-                            </div>
-
-                            {/* Tribe */}
-                            <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
-                                    <Users className="h-4 w-4" />
-                                    Filter by Tribe
-                                </label>
-
-                                <Select
-                                    value={tribeFilter}
-                                    onValueChange={setTribeFilter}
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select tribe" />
-                                    </SelectTrigger>
-
-                                    <SelectContent>
-                                        <SelectItem value="all">
-                                            All Tribes
-                                        </SelectItem>
-
-                                        {tribes.map((tribe) => (
-                                            <SelectItem
-                                                key={tribe}
-                                                value={tribe}
-                                            >
-                                                {tribe}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
                             </div>
 
                             {/* Location */}
@@ -231,17 +172,16 @@ export function NannyTable() {
                     </div>
 
                     {/* Table */}
-                    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm overflow-x-auto">
+                    <div className="overflow-hidden overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
                         <Table>
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>#</TableHead>
                                     <TableHead>Name</TableHead>
-                                    <TableHead>Tribe</TableHead>
                                     <TableHead>Location</TableHead>
+                                    <TableHead>Status</TableHead>
                                 </TableRow>
                             </TableHeader>
-
                             <TableBody>
                                 {loading ? (
                                     <TableRow>
@@ -265,12 +205,25 @@ export function NannyTable() {
                                     filteredData.map((person, index) => (
                                         <TableRow key={person.id}>
                                             <TableCell>{index + 1}</TableCell>
-                                            <TableCell>{person.name}</TableCell>
                                             <TableCell>
-                                                {person.tribe}
+                                                {person.first_name}{" "}
+                                                {person.last_name}
                                             </TableCell>
                                             <TableCell>
                                                 {person.location}
+                                            </TableCell>
+                                            <TableCell>
+                                                <span
+                                                    className={`rounded-full px-2 py-1 text-xs ${
+                                                        person.is_employed
+                                                            ? "bg-red-100 text-red-700"
+                                                            : "bg-green-100 text-green-700"
+                                                    }`}
+                                                >
+                                                    {person.is_employed
+                                                        ? "Employed"
+                                                        : "Available"}
+                                                </span>
                                             </TableCell>
                                         </TableRow>
                                     ))
