@@ -18,24 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, X, MapPin } from "lucide-react";
 import { CreateJobDialog } from "./CreateJobDialog";
-import { getWorkers } from "@/service/workers.service";
-
-interface Worker {
-    id: string;
-    phone_number: string;
-    first_name: string;
-    last_name: string;
-    location: string;
-    is_employed: boolean;
-}
-
-interface WorkersResponse {
-    workers: Worker[];
-    total_workers: number;
-    page: number;
-    page_size: number;
-    total_pages: number;
-}
+import { getWorkers, type WorkersResponse } from "@/service/workers.service";
 
 export function NannyTable() {
     const [workersResponse, setWorkersResponse] =
