@@ -23,6 +23,7 @@ export interface JobCreation {
     location: string;
     salary: number;
     work_type: string;
+    status?: string;
 }
 
 export async function createEmployer(data: CreateEmployer) {

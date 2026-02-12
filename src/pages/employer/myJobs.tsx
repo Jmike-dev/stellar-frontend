@@ -68,7 +68,7 @@ export default function MyJobs() {
                                         Location
                                     </TableHead>
                                     <TableHead className="font-semibold">
-                                        Work Type
+                                        Work status
                                     </TableHead>
                                     <TableHead className="text-right font-semibold">
                                         Salary
@@ -100,7 +100,7 @@ export default function MyJobs() {
                                             </TableCell>
                                             <TableCell>
                                                 <span className="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
-                                                    {job.work_type}
+                                                    {job.status}
                                                 </span>
                                             </TableCell>
                                             <TableCell className="text-right font-medium text-gray-900">
