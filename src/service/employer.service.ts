@@ -46,3 +46,9 @@ export async function createJob(data: JobCreation) {
     console.log("Employer created:", response.data);
     return response.data;
 }
+
+export async function getMyJobs(): Promise<JobCreation[]> {
+    const response = await api.get("/v1/jobs/my-jobs");
+
+    return response.data;
+}

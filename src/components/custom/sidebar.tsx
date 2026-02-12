@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import { Home, User, X } from "lucide-react";
+import { Briefcase, Home, User, X } from "lucide-react";
 
 interface SidebarProps {
     isOpen: boolean;
@@ -9,6 +9,7 @@ interface SidebarProps {
 function Sidebar({ isOpen, onClose }: SidebarProps) {
     const navItems = [
         { path: "/employer/dashboard", label: "Dashboard", icon: Home },
+        { path: "/employer/my-jobs", label: "My Jobs", icon: Briefcase },
         { path: "/employer/profile", label: "Profile", icon: User },
     ];
 
@@ -24,11 +25,10 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
 
             {/* Sidebar */}
             <aside
-                className={`fixed inset-y-0 left-0 z-30 w-64 transform bg-white shadow-lg transition-transform duration-300 ease-in-out lg:static ${
-                    isOpen
+                className={`fixed inset-y-0 left-0 z-30 w-64 transform bg-white shadow-lg transition-transform duration-300 ease-in-out lg:static ${isOpen
                         ? "translate-x-0"
                         : "-translate-x-full lg:translate-x-0"
-                }`}
+                    }`}
             >
                 <div className="flex h-full flex-col">
                     {/* Logo/Brand */}
@@ -51,10 +51,9 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
                                 key={item.path}
                                 to={item.path}
                                 className={({ isActive }) =>
-                                    `flex items-center gap-3 rounded-lg px-4 py-3 transition-colors ${
-                                        isActive
-                                            ? "bg-blue-500 text-white"
-                                            : "text-gray-700 hover:bg-gray-100"
+                                    `flex items-center gap-3 rounded-lg px-4 py-3 transition-colors ${isActive
+                                        ? "bg-blue-500 text-white"
+                                        : "text-gray-700 hover:bg-gray-100"
                                     }`
                                 }
                                 onClick={onClose}
