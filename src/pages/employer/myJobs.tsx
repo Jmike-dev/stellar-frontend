@@ -57,7 +57,7 @@ export default function MyJobs() {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="overflow-hidden rounded-md border">
+                    <div className="overflow-hidden rounded-md border overflow-x-auto">
                         <Table>
                             <TableHeader>
                                 <TableRow className="bg-gray-50">
