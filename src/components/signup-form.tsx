@@ -6,7 +6,6 @@ import {
     FieldDescription,
     FieldGroup,
     FieldLabel,
-    FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { NavLink, useNavigate } from "react-router";
@@ -15,8 +14,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import signUpImage from "/undraw_online-profile_v9c1.svg";
+import { createEmployer } from "@/service/employer.service";
 
-// Zod validation schema
+// ✅ Zod validation schema (matches CreateEmployer interface)
 const signupSchema = z
     .object({
         email: z.string().email("Please enter a valid email address"),
@@ -24,6 +25,13 @@ const signupSchema = z
             .string()
             .min(8, "Password must be at least 8 characters long"),
         confirmPassword: z.string(),
+
+        first_name: z.string().min(1, "First name is required"),
+        last_name: z.string().min(1, "Last name is required"),
+        phone_number: z.string().min(10, "Phone number is required"),
+        location: z.string().min(1, "Location is required"),
+        tribe: z.string().min(1, "Tribe is required"),
+        religion: z.string().min(1, "Religion is required"),
     })
     .refine((data) => data.password === data.confirmPassword, {
         message: "Passwords do not match",
@@ -43,14 +51,34 @@ export function SignupForm({
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm<SignupFormData>({
         resolver: zodResolver(signupSchema),
     });
 
+    // ✅ Call createEmployer service
     const onSubmit = async (data: SignupFormData) => {
-        console.log("Form data:", data);
-        navigate("employer/dashboard");
+        try {
+            const payload = {
+                email: data.email,
+                password: data.password,
+                first_name: data.first_name,
+                last_name: data.last_name,
+                phone_number: data.phone_number,
+                location: data.location,
+                tribe: data.tribe,
+                religion: data.religion,
+                role: "employer" as const,
+            };
+
+            console.log("Submitting employer:", payload);
+
+            await createEmployer(payload);
+
+            navigate("/employer/dashboard");
+        } catch (error) {
+            console.error("Signup error:", error);
+        }
     };
 
     return (
@@ -66,15 +94,35 @@ export function SignupForm({
                                 <h1 className="text-2xl font-bold">
                                     Create your account
                                 </h1>
-                                <p className="text-muted-foreground text-sm text-balance">
-                                    Enter your email below to create your
-                                    account
-                                </p>
                             </div>
+
+                            {/* Names */}
+                            <Field className="grid grid-cols-2 gap-4">
+                                <Field>
+                                    <FieldLabel>First Name</FieldLabel>
+                                    <Input {...register("first_name")} />
+                                    {errors.first_name && (
+                                        <FieldDescription className="text-red-500">
+                                            {errors.first_name.message}
+                                        </FieldDescription>
+                                    )}
+                                </Field>
+
+                                <Field>
+                                    <FieldLabel>Last Name</FieldLabel>
+                                    <Input {...register("last_name")} />
+                                    {errors.last_name && (
+                                        <FieldDescription className="text-red-500">
+                                            {errors.last_name.message}
+                                        </FieldDescription>
+                                    )}
+                                </Field>
+                            </Field>
+
+                            {/* Email */}
                             <Field>
-                                <FieldLabel htmlFor="email">Email</FieldLabel>
+                                <FieldLabel>Email</FieldLabel>
                                 <Input
-                                    id="email"
                                     type="email"
                                     placeholder="m@example.com"
                                     {...register("email")}
@@ -84,128 +132,145 @@ export function SignupForm({
                                         {errors.email.message}
                                     </FieldDescription>
                                 )}
-                                <FieldDescription>
-                                    We&apos;ll use this to contact you. We will
-                                    not share your email with anyone else.
-                                </FieldDescription>
                             </Field>
+
+                            {/* Phone */}
                             <Field>
-                                <Field className="grid grid-cols-2 gap-4">
-                                    <Field>
-                                        <FieldLabel htmlFor="password">
-                                            Password
-                                        </FieldLabel>
-                                        <div className="relative">
-                                            <Input
-                                                id="password"
-                                                type={
-                                                    showPassword
-                                                        ? "text"
-                                                        : "password"
-                                                }
-                                                {...register("password")}
-                                                className="pr-10"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() =>
-                                                    setShowPassword(
-                                                        !showPassword,
-                                                    )
-                                                }
-                                                className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 transition-colors"
-                                            >
-                                                {showPassword ? (
-                                                    <EyeOff className="h-4 w-4" />
-                                                ) : (
-                                                    <Eye className="h-4 w-4" />
-                                                )}
-                                                <span className="sr-only">
-                                                    {showPassword
-                                                        ? "Hide password"
-                                                        : "Show password"}
-                                                </span>
-                                            </button>
-                                        </div>
-                                        {errors.password && (
-                                            <FieldDescription className="text-red-500">
-                                                {errors.password.message}
-                                            </FieldDescription>
-                                        )}
-                                    </Field>
-                                    <Field>
-                                        <FieldLabel htmlFor="confirm-password">
-                                            Confirm Password
-                                        </FieldLabel>
-                                        <div className="relative">
-                                            <Input
-                                                id="confirm-password"
-                                                type={
-                                                    showConfirmPassword
-                                                        ? "text"
-                                                        : "password"
-                                                }
-                                                {...register("confirmPassword")}
-                                                className="pr-10"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() =>
-                                                    setShowConfirmPassword(
-                                                        !showConfirmPassword,
-                                                    )
-                                                }
-                                                className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 transition-colors"
-                                            >
-                                                {showConfirmPassword ? (
-                                                    <EyeOff className="h-4 w-4" />
-                                                ) : (
-                                                    <Eye className="h-4 w-4" />
-                                                )}
-                                                <span className="sr-only">
-                                                    {showConfirmPassword
-                                                        ? "Hide password"
-                                                        : "Show password"}
-                                                </span>
-                                            </button>
-                                        </div>
-                                        {errors.confirmPassword && (
-                                            <FieldDescription className="text-red-500">
-                                                {errors.confirmPassword.message}
-                                            </FieldDescription>
-                                        )}
-                                    </Field>
+                                <FieldLabel>Phone Number</FieldLabel>
+                                <Input {...register("phone_number")} />
+                                {errors.phone_number && (
+                                    <FieldDescription className="text-red-500">
+                                        {errors.phone_number.message}
+                                    </FieldDescription>
+                                )}
+                            </Field>
+
+                            {/* Location */}
+                            <Field>
+                                <FieldLabel>Location</FieldLabel>
+                                <Input {...register("location")} />
+                                {errors.location && (
+                                    <FieldDescription className="text-red-500">
+                                        {errors.location.message}
+                                    </FieldDescription>
+                                )}
+                            </Field>
+
+                            {/* Tribe + Religion */}
+                            <Field className="grid grid-cols-2 gap-4">
+                                <Field>
+                                    <FieldLabel>Tribe</FieldLabel>
+                                    <Input {...register("tribe")} />
+                                    {errors.tribe && (
+                                        <FieldDescription className="text-red-500">
+                                            {errors.tribe.message}
+                                        </FieldDescription>
+                                    )}
                                 </Field>
-                                <FieldDescription>
-                                    Must be at least 8 characters long.
-                                </FieldDescription>
+
+                                <Field>
+                                    <FieldLabel>Religion</FieldLabel>
+                                    <Input {...register("religion")} />
+                                    {errors.religion && (
+                                        <FieldDescription className="text-red-500">
+                                            {errors.religion.message}
+                                        </FieldDescription>
+                                    )}
+                                </Field>
                             </Field>
-                            <Field>
-                                <Button type="submit">Create Account</Button>
+
+                            {/* Passwords */}
+                            <Field className="grid grid-cols-2 gap-4">
+                                <Field>
+                                    <FieldLabel>Password</FieldLabel>
+                                    <div className="relative">
+                                        <Input
+                                            type={
+                                                showPassword
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                            {...register("password")}
+                                            className="pr-10"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setShowPassword(!showPassword)
+                                            }
+                                            className="absolute top-1/2 right-3 -translate-y-1/2"
+                                        >
+                                            {showPassword ? (
+                                                <EyeOff size={16} />
+                                            ) : (
+                                                <Eye size={16} />
+                                            )}
+                                        </button>
+                                    </div>
+                                    {errors.password && (
+                                        <FieldDescription className="text-red-500">
+                                            {errors.password.message}
+                                        </FieldDescription>
+                                    )}
+                                </Field>
+
+                                <Field>
+                                    <FieldLabel>Confirm Password</FieldLabel>
+                                    <div className="relative">
+                                        <Input
+                                            type={
+                                                showConfirmPassword
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                            {...register("confirmPassword")}
+                                            className="pr-10"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setShowConfirmPassword(
+                                                    !showConfirmPassword,
+                                                )
+                                            }
+                                            className="absolute top-1/2 right-3 -translate-y-1/2"
+                                        >
+                                            {showConfirmPassword ? (
+                                                <EyeOff size={16} />
+                                            ) : (
+                                                <Eye size={16} />
+                                            )}
+                                        </button>
+                                    </div>
+                                    {errors.confirmPassword && (
+                                        <FieldDescription className="text-red-500">
+                                            {errors.confirmPassword.message}
+                                        </FieldDescription>
+                                    )}
+                                </Field>
                             </Field>
-                            <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                                Or continue with
-                            </FieldSeparator>
+
+                            <Button type="submit" disabled={isSubmitting}>
+                                {isSubmitting
+                                    ? "Creating account..."
+                                    : "Create Account"}
+                            </Button>
+
                             <FieldDescription className="text-center">
                                 Already have an account?{" "}
-                                <NavLink to="/signup"> Sign Up</NavLink>
+                                <NavLink to="/">Login</NavLink>
                             </FieldDescription>
                         </FieldGroup>
                     </form>
+
                     <div className="bg-muted relative hidden md:block">
                         <img
-                            src="/placeholder.svg"
-                            alt="Image"
-                            className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                            src={signUpImage}
+                            className="absolute inset-0 h-full w-full object-cover"
                         />
                     </div>
                 </CardContent>
             </Card>
-            <FieldDescription className="px-6 text-center">
-                By clicking continue, you agree to our{" "}
-                <a href="#">Terms of Service</a> and{" "}
-                <a href="#">Privacy Policy</a>.
-            </FieldDescription>
         </div>
     );
 }
