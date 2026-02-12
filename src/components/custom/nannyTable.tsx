@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, X, Users, MapPin } from "lucide-react";
-import { Button } from "../ui/button";
+import { CreateJobDialog } from "./CreateJobDialog";
 import { getWorkers } from "@/service/workers.service";
 
 interface Worker {
@@ -108,9 +108,7 @@ export function NannyTable() {
                     <CardTitle className="text-3xl font-bold">
                         list of nannies available
                         <div className="flex justify-end">
-                            <Button className="bg-green-500 hover:bg-indigo-600">
-                                create job
-                            </Button>
+                            <CreateJobDialog />
                         </div>
                     </CardTitle>
                 </CardHeader>
@@ -233,7 +231,7 @@ export function NannyTable() {
                     </div>
 
                     {/* Table */}
-                    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+                    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm overflow-x-auto">
                         <Table>
                             <TableHeader>
                                 <TableRow>

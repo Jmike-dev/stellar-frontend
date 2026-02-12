@@ -16,6 +16,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import loginImage from "/undraw_enter-password_1kl4.svg";
 import { employerLogin } from "@/service/employer.service";
+import { toast } from "sonner";
 
 // ✅ Zod schema
 const loginSchema = z.object({
@@ -46,11 +47,11 @@ export function LoginForm({
         try {
             setApiError(null);
 
-            console.log("Login payload:", data);
+            // console.log("Login payload:", data);
 
             const response = await employerLogin(data);
 
-            console.log("Login success:", response);
+            toast.success("Login success:", response);
 
             // Optional: store token if backend returns one
             // localStorage.setItem("token", response.access_token);
