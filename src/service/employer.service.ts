@@ -16,6 +16,13 @@ export interface Login {
     email: string;
     password: string;
 }
+export interface JobCreation {
+    title: string;
+    description: string;
+    location: string;
+    salary: number;
+    work_type: string;
+}
 
 export async function createEmployer(data: CreateEmployer) {
     const response = await api.post("/v1/auth/employer/register", data);
@@ -25,6 +32,11 @@ export async function createEmployer(data: CreateEmployer) {
 
 export async function employerLogin(data: Login) {
     const response = await api.post("/v1/auth/employer/login", data);
+    console.log("Employer created:", response.data);
+    return response.data;
+}
+export async function createJob(data: JobCreation) {
+    const response = await api.post("/v1/jobs/", data);
     console.log("Employer created:", response.data);
     return response.data;
 }
