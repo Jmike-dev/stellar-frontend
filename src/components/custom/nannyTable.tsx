@@ -16,8 +16,9 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, X, Users, MapPin } from "lucide-react";
+import { Button } from "../ui/button";
 
 interface Person {
     id: number;
@@ -95,14 +96,16 @@ export function NannyTable() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 md:p-8">
             <Card className="mx-auto max-w-7xl border-0 shadow-2xl">
-                {/* <CardHeader className="space-y-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+                <CardHeader className="space-y-1 text-indigo-600">
                     <CardTitle className="text-3xl font-bold">
-                        Kenyan People Directory
+                        list of nannies available
+                        <div className="flex justify-end">
+                            <Button className="cursor-pointer bg-green-500 capitalize duration-300 ease-in-out hover:bg-indigo-600">
+                                create job
+                            </Button>
+                        </div>
                     </CardTitle>
-                    <p className="text-blue-100">
-                        Browse and filter people by tribe and location
-                    </p>
-                </CardHeader> */}
+                </CardHeader>
                 <CardContent className="p-6">
                     {/* Filters Section */}
                     <div className="mb-6 space-y-4">

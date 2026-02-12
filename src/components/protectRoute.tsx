@@ -25,7 +25,7 @@ function ProtectRoute() {
                         <Menu size={24} />
                     </button>
                     <h2 className="text-lg font-semibold text-gray-800">
-                        Welcome Back
+                        Welcome Back john doe
                     </h2>
                 </header>
 
