@@ -33,6 +33,12 @@ export async function createEmployer(data: CreateEmployer) {
 export async function employerLogin(data: Login) {
     const response = await api.post("/v1/auth/employer/login", data);
     console.log("Employer created:", response.data);
+
+    // Store access token in session storage
+    if (response.data?.access_token) {
+        sessionStorage.setItem("access_token", response.data.access_token);
+    }
+
     return response.data;
 }
 export async function createJob(data: JobCreation) {
